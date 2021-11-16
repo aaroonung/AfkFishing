@@ -6,12 +6,16 @@ group 'me.aov'
 version '1.0-SNAPSHOT'
 
 repositories {
-    mavenCentral()
-}
+    maven { url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshot'}
+    maven { url = "https://jitpack.io" }
+    maven { url = "https://repo.codemc.org/repository/maven-public/" }
+    mavenCentral();
+    mavenLocal();
 
+}
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+    compileOnly("org.spigotmc:spigot-api:1.17-R0.1-SNAPSHOT");
+    compileOnly("com.gmail.filoghost.holographicdisplays:holographicdisplays-api:2.4.9");
 }
 
 test {

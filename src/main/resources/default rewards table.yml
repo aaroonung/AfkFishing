@@ -1,0 +1,6 @@
+table:
+# - PROBABILITY||VALUES||VALUES||...
+# - display:(material:durability amount name:myName lore:lore1|lore2 skull:base64 color:r,g,b effect:haste power:1 duration:30 splash:true unbreakable:true glow:true hide:true)
+  - "joe"
+  - "fox"
+  - "rat"
