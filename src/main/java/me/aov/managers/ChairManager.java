@@ -1,6 +1,9 @@
-package me.aov;
+package me.aov.managers;
 
+import me.aov.AfkFishing;
+import me.aov.task.HologramUpdaterTask;
 import me.aov.objects.Chair;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -14,12 +17,14 @@ public class ChairManager {
     private HashSet<Location> chairLocations;
     private HashMap<UUID,Chair> playersInChairs;
     private AfkFishing main;
+    private int taskInt;
 
     public ChairManager(AfkFishing main) {
         this.main = main;
         chairsList = new HashSet<>();
         chairLocations = new HashSet<>();
         playersInChairs = new HashMap<>();
+        taskInt = Bukkit.getScheduler().scheduleSyncRepeatingTask(main, new HologramUpdaterTask(main), 40L, 20L);
     }
 
 
@@ -40,6 +45,7 @@ public class ChairManager {
 
     public void sitInChair(Player player, Chair chair){
         playersInChairs.put(player.getUniqueId(), chair);
+        chair.sit(player);
     }
 
     public void sitInChair(Player player, Location location){
@@ -50,8 +56,40 @@ public class ChairManager {
         }
     }
 
+    public void removePlayer(Player player){
+        this.playersInChairs.get(player.getUniqueId()).removePlayer();
+        this.playersInChairs.remove(player.getUniqueId());
+    }
+
     public boolean inChair(Player player){
         return playersInChairs.containsKey(player.getUniqueId());
     }
 
+    public HashSet<Chair> getChairsList() {
+        return chairsList;
+    }
+
+    public void setChairsList(HashSet<Chair> chairsList) {
+        this.chairsList = chairsList;
+    }
+
+    public HashSet<Location> getChairLocations() {
+        return chairLocations;
+    }
+
+    public void setChairLocations(HashSet<Location> chairLocations) {
+        this.chairLocations = chairLocations;
+    }
+
+    public HashMap<UUID, Chair> getPlayersInChairs() {
+        return playersInChairs;
+    }
+
+    public void setPlayersInChairs(HashMap<UUID, Chair> playersInChairs) {
+        this.playersInChairs = playersInChairs;
+    }
+
+    public int getTaskInt() {
+        return taskInt;
+    }
 }

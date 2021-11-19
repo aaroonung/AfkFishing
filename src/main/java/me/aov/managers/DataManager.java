@@ -1,18 +1,26 @@
-package me.aov;
+package me.aov.managers;
 
+import me.aov.AfkFishing;
+import me.aov.objects.ChairDescription;
 import me.aov.objects.RewardTable;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.inventory.ItemStack;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
 
 public class DataManager {
 
     public HashMap<String, RewardTable> rewardTableSet;
+    public HashMap<String, ChairDescription> chairDescriptions;
 
     private AfkFishing main;
 
@@ -22,30 +30,86 @@ public class DataManager {
     private File menuLangFile;
     private FileConfiguration menuLangConfiguration;
 
+    private File menuConfigFile;
+    private FileConfiguration menuConfiguration;
+
     private Path dataFolderPath;
     private Path rewardsFolderPath;
+    private Path descriptionsPath;
 
     public DataManager(AfkFishing main) {
         this.main = main;
         rewardTableSet = new HashMap<>();
+        chairDescriptions = new HashMap<>();
         generateFolder();
         generateConfigs();
         loadRewardTables();
+        loadDescriptions();
     }
 
-    private void loadRewardTables(){
-        for(File f : rewardsFolderPath.toFile().listFiles()){
-            if(f.getName().contains(".yml")){
+    public ArrayList<ItemStack> getItemStacksFromFiles(String name) {
+        ArrayList<ItemStack> itemStacks = new ArrayList<>();
+        File f = new File(dataFolderPath.toFile(), name + ".yml");
+        if (!f.exists()) {
+            try {
+                f.createNewFile();
+                return itemStacks;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            FileConfiguration itemStacksConfig = (FileConfiguration) new YamlConfiguration();
+            if (itemStacksConfig.getList("items") != null) {
+                itemStacks = (ArrayList<ItemStack>) itemStacksConfig.getList("items");
+            }
+        }
+        return itemStacks;
+    }
+
+    public void saveItemStacks(ArrayList<ItemStack> arrayList, String name) {
+        File f = new File(dataFolderPath.toFile(), name + ".yml");
+        if (!f.exists()) {
+            try {
+                f.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        FileConfiguration itemStacksConfig = (FileConfiguration) new YamlConfiguration();
+        itemStacksConfig.set("items", arrayList);
+    }
+
+
+    private void loadRewardTables() {
+        for (File f : rewardsFolderPath.toFile().listFiles()) {
+            if (f.getName().contains(".yml")) {
                 FileConfiguration fileConfiguration = (FileConfiguration) new YamlConfiguration();
-                try{
-                   fileConfiguration.load(f);
-                   rewardTableSet.put(f.getName().replace(".yml", ""), new RewardTable(fileConfiguration, main));
+                try {
+                    fileConfiguration.load(f);
+                    rewardTableSet.put(f.getName().replace(".yml", ""), new RewardTable(fileConfiguration, main));
                 } catch (InvalidConfigurationException | IOException e) {
                     main.getLogger().severe("Could not load " + f.getName());
                     continue;
                 }
-            }else{
-                main.getLogger().warning("Non-yml file \"" +f.getName() + "\" found in the reward tables");
+            } else {
+                main.getLogger().warning("Non-yml file \"" + f.getName() + "\" found in the reward tables");
+            }
+        }
+    }
+
+    private void loadDescriptions() {
+        for (File f : descriptionsPath.toFile().listFiles()) {
+            if (f.getName().contains(".yml")) {
+                FileConfiguration fileConfiguration = (FileConfiguration) new YamlConfiguration();
+                try {
+                    fileConfiguration.load(f);
+                    chairDescriptions.put(f.getName().replace(".yml", ""), new ChairDescription(fileConfiguration, f.getName().replace(".yml", ""), main));
+                } catch (InvalidConfigurationException | IOException e) {
+                    main.getLogger().severe("Could not load " + f.getName());
+                    continue;
+                }
+            } else {
+                main.getLogger().warning("Non-yml file \"" + f.getName() + "\" found in the descriptions folder");
             }
         }
     }
@@ -64,6 +128,12 @@ public class DataManager {
             rewardTables.mkdirs();
         }
         rewardsFolderPath = rewardTables.toPath();
+
+        File descriptions = new File(main.getDataFolder(), "descriptions");
+        if (!descriptions.exists()) {
+            descriptions.mkdirs();
+        }
+        descriptionsPath = descriptions.toPath();
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
@@ -127,5 +197,9 @@ public class DataManager {
 
     public FileConfiguration getLangConfiguration() {
         return langConfiguration;
+    }
+
+    public FileConfiguration getMenuLangConfiguration() {
+        return menuLangConfiguration;
     }
 }

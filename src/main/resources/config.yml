@@ -6,3 +6,10 @@ drop-items-on-full: true
 #true: Drops items on floor if inventory full
 #false: Items are not granted
 
+reset-time-on-dismount: true
+#true: time before next reward is reset
+#false: time before next reward is persistent
+
+enable-shift-right-click-menu: true
+#true: enables the shift right click menu
+#false: disables it

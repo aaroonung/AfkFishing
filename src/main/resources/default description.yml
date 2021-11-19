@@ -1,0 +1,30 @@
+#internal name is the file name
+
+display: "Gray Fishing Chair"
+#Name that's displayed in placeholders
+
+time: 30
+#Time per rewards
+
+reward-table: "default rewards table"
+#The reward table to use for this type of this fishing chair
+#defaults to default rewards table if there is an error.
+
+hologram-lines:
+  - ""
+  - ""
+  - ""
+#Lines that will display on the hologram above the chair.
+#Placeholders:
+#   %display% - The value indicated in "display" above.
+#   %user% - User currently in chair - Default value for no user will be in lang.yml under empty-user
+#   %timeleft% - The time left before the next reward
+#   %totaltime% - The total amount of time for an award
+
+hologram-offset: 4
+#The Y-Level offset of the hologram
+#Default: 4
+
+chair-offset: 0.25
+#The y level where the player sits
+#Default: 0.25

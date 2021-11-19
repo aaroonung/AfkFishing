@@ -76,11 +76,11 @@ public class RewardTable {
             } else if (stringValue.startsWith("cmd(")) {
                 main.getServer().dispatchCommand(main.getServer().getConsoleSender(), substring
                         .replaceAll("%player%", player.getDisplayName())
-                        .replaceAll("%chair name%", chair.getChairDescription().getName()));
+                        .replaceAll("%chair name%", chair.getChairDescription().getDisplay()));
             } else if (stringValue.startsWith("broadcast(")) {
                 main.getServer().broadcastMessage(Color.color(main.getDataManager().getLang("prefix") + substring)
                         .replaceAll("%player%", player.getDisplayName())
-                        .replaceAll("%chair name%", chair.getChairDescription().getName()));
+                        .replaceAll("%chair name%", chair.getChairDescription().getDisplay()));
             }
             if (!main.getDataManager().getLang("reward-message").isBlank()) {
                 player.sendMessage(main.getDataManager().getLang("prefix")
