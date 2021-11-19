@@ -1,0 +1,21 @@
+prefix: "&7[&l&aAfk&bFishing&7] "
+#Prefix for every plugin message
+#Can be empty
+
+reward-message: "You've gained a fishing reward!"
+#Message upon receiving reward
+#Can be empty
+
+full-inventory-title: "&cInventory Full !!"
+#Displayed Title
+full-inventory-subtitle: "Items will be dropped on the floor"
+#Displayed Subtitle
+full-inventory-fade-in: 10
+#Length in ticks of fade in, default:10
+full-inventory-stay: 70
+#Length in ticks to stay, default:70
+full-inventory-fade-out: 20
+#Length in ticks of fade out.
+
+
+

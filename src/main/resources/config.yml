@@ -1,0 +1,8 @@
+reward-full-inventory: true
+#true: Distributes rewards despite full inventory
+#false: Rewards are blocked
+
+drop-items-on-full: true
+#true: Drops items on floor if inventory full
+#false: Items are not granted
+

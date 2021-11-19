@@ -19,8 +19,6 @@ public class ChairClickListener implements Listener {
     public void onPlayerInteract(PlayerInteractEvent event) {
         if(event != null && event.getAction().equals(Action.RIGHT_CLICK_BLOCK)){
             Player player = event.getPlayer();
-            Chair ch = new Chair(main, event.getClickedBlock().getLocation().add(0, 0, 0));
-            ch.sit(player);
         }
 
     }

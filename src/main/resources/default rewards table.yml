@@ -1,6 +1,31 @@
+
+# - PROBABILITY;VALUES;VALUES;...
+
+# - Possible Values:
+# - items(MATERIAL|DURABILITY|AMOUNT|NAME|LORE|ENCHANT:LEVEL|POTIONEFFECT:LEVEL:DURATION|)
+# -   Gives players the described item
+# -   Separate Lore by "\n"
+# -   Multiple separate enchants and potions by a space
+# -
+# - broadcast(MESSAGE)
+# -   Broadcasts a message to the whole server
+# -   Placeholders available
+# -     %player% - replaces with the player ign
+# -     %chair name% - replaces with the name of the Chair
+# -
+# - msg(MESSAGE)
+# -   Sends message to the player
+# -   Placeholders available
+# -     %player% - replaces with the player ign
+# -     %chair name% - replaces with the name of the Chair
+# -
+# - cmd(COMMAND)
+# -   Runs a console command
+# -   Placeholders available
+# -     %player% - replaces with the player ign
+# -     %chair name% - replaces with the name of the Chair
+# - permission(PERMISSION)
+# - Specifies a permission for given rewards
+# - Caution: If a player without the permission gets it, it will redraw, avoid infinite loops where a player does not have permission for any reward.
 table:
-# - PROBABILITY||VALUES||VALUES||...
-# - display:(material:durability amount name:myName lore:lore1|lore2 skull:base64 color:r,g,b effect:haste power:1 duration:30 splash:true unbreakable:true glow:true hide:true)
-  - "joe"
-  - "fox"
-  - "rat"
+  - "10;item(DIRT|0|22|my dirt|lore1\nlore2|enchants|potions|);item(DIRT|0|1| | | | |);"

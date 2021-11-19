@@ -2,15 +2,12 @@ package me.aov;
 
 import me.aov.commands.FishCommands;
 import me.aov.listeners.ChairClickListener;
-import me.aov.objects.Chair;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.ArrayList;
 
 public class AfkFishing extends JavaPlugin {
 
-    private ArrayList<Chair> chairsList;
     private DataManager dataManager;
 
     @Override
@@ -36,13 +33,10 @@ public class AfkFishing extends JavaPlugin {
         }
     }
 
-    private void saveChairs(){
-
+    public DataManager getDataManager() {
+        return dataManager;
     }
 
-    public ArrayList<Chair> getChairsList() {
-        return chairsList;
-    }
 }
 
 //TODO Add Chair Right Click
@@ -51,4 +45,3 @@ public class AfkFishing extends JavaPlugin {
 //TODO Add chair creation
 //TODO Add reload
 //TODO Add permissions, commands
-//TODO Permission Specific Rewards

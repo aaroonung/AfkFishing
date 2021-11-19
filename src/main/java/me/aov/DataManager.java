@@ -39,6 +39,7 @@ public class DataManager {
                 FileConfiguration fileConfiguration = (FileConfiguration) new YamlConfiguration();
                 try{
                    fileConfiguration.load(f);
+                   rewardTableSet.put(f.getName().replace(".yml", ""), new RewardTable(fileConfiguration, main));
                 } catch (InvalidConfigurationException | IOException e) {
                     main.getLogger().severe("Could not load " + f.getName());
                     continue;
@@ -60,7 +61,7 @@ public class DataManager {
         dataFolderPath = dataFolder.toPath();
         File rewardTables = new File(main.getDataFolder(), "rewards");
         if (!rewardTables.exists()) {
-            dataFolder.mkdirs();
+            rewardTables.mkdirs();
         }
         rewardsFolderPath = rewardTables.toPath();
     }
@@ -99,16 +100,11 @@ public class DataManager {
         FileConfiguration defaultRewardsFileConfiguration = (FileConfiguration) new YamlConfiguration();
         if (!defaultRewardsFile.exists()) {
             try {
-                defaultRewardsFile.createNewFile();
                 copyInputStreamToFile(main.getResource("default rewards table.yml"), defaultRewardsFile);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-    }
-
-    private void parseRewardTables() {
-
     }
 
     private static void copyInputStreamToFile(InputStream inputStream, File file)
@@ -123,5 +119,13 @@ public class DataManager {
             }
         }
 
+    }
+
+    public String getLang(String s) {
+        return langConfiguration.getString(s);
+    }
+
+    public FileConfiguration getLangConfiguration() {
+        return langConfiguration;
     }
 }

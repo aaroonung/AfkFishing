@@ -24,11 +24,12 @@ public class Chair {
     private Location chairLocation;
 
 
-    public Chair(AfkFishing main, Location chairLocation){
+    public Chair(AfkFishing main, Location chairLocation, ChairDescription chairDescription){
         this.main = main;
         this.chairLocation = chairLocation;
         this.hologramLocation = chairLocation.clone().add(.5,4,.5);
         this.armorStandLocation = chairLocation.clone().add(.5,.25,.5);
+        this.chairDescription = chairDescription;
         setUpHologram();
         setUpChair();
     }
@@ -56,6 +57,39 @@ public class Chair {
         armorStand.addPassenger(player);
     }
 
+    public AfkFishing getMain() {
+        return main;
+    }
 
+    public int getTime() {
+        return time;
+    }
 
+    public int getId() {
+        return id;
+    }
+
+    public ChairDescription getChairDescription() {
+        return chairDescription;
+    }
+
+    public ArmorStand getArmorStand() {
+        return armorStand;
+    }
+
+    public Hologram getChairHologram() {
+        return chairHologram;
+    }
+
+    public Location getArmorStandLocation() {
+        return armorStandLocation;
+    }
+
+    public Location getHologramLocation() {
+        return hologramLocation;
+    }
+
+    public Location getChairLocation() {
+        return chairLocation;
+    }
 }
