@@ -38,7 +38,6 @@ public class RewardTable {
                 continue;
             }
             add(weight, s);
-            System.out.println(s);
         }
     }
 
@@ -81,11 +80,14 @@ public class RewardTable {
                 main.getServer().broadcastMessage(Color.color(main.getDataManager().getLang("prefix") + substring)
                         .replaceAll("%player%", player.getDisplayName())
                         .replaceAll("%chair name%", chair.getChairDescription().getDisplay()));
+            } else if(stringValue.startsWith("msg(")){
+                player.sendMessage(Color.color(main.getDataManager().getLang("prefix") + substring));
             }
-            if (!main.getDataManager().getLang("reward-message").isBlank()) {
-                player.sendMessage(main.getDataManager().getLang("prefix")
-                        + main.getDataManager().getLang("reward-message"));
-            }
+
+        }
+        if (!main.getDataManager().getLang("reward-message").isBlank()) {
+            player.sendMessage(Color.color(main.getDataManager().getLang("prefix")
+                    + main.getDataManager().getLang("reward-message")));
         }
     }
 
@@ -131,7 +133,7 @@ public class RewardTable {
         }
 
         List<String> lore = null;
-        if (!fields[4].isBlank()) {
+        if (!fields[4].trim().isBlank()) {
             lore = Arrays.asList(Color.color(fields[4]).split("\\n"));
         }
 
@@ -245,8 +247,6 @@ public class RewardTable {
     }
 
     //TODO Add ItemStack in hand > String
-    //TODO Add ItemFlags
-    //TODO Add msg, broadcast, cmd
 
 
 }

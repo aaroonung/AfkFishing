@@ -16,6 +16,7 @@ public class ChairManager {
     private HashSet<Chair> chairsList;
     private HashSet<Location> chairLocations;
     private HashMap<UUID,Chair> playersInChairs;
+    private HashMap<UUID, String> creatingChair;
     private AfkFishing main;
     private int taskInt;
 
@@ -23,11 +24,25 @@ public class ChairManager {
         this.main = main;
         chairsList = new HashSet<>();
         chairLocations = new HashSet<>();
+        creatingChair = new HashMap<>();
         playersInChairs = new HashMap<>();
         taskInt = Bukkit.getScheduler().scheduleSyncRepeatingTask(main, new HologramUpdaterTask(main), 40L, 20L);
     }
 
+    public void creatingChair(Player player, String s){
+        creatingChair.put(player.getUniqueId(), s);
+    }
 
+    public void removeChair(Chair chair){
+        chairLocations.remove(chair.getChairLocation());
+        chairsList.remove(chair);
+        chair.getChairHologram().delete();
+        if(chair.getSittingPlayer() != null){
+            playersInChairs.remove(chair.getSittingPlayer().getUniqueId());
+            chair.getArmorStand().getPassengers().clear();
+            chair.removePlayer();
+        }
+    }
     public boolean isChair(Location location){
         return chairLocations.contains(location);
     }
@@ -51,8 +66,8 @@ public class ChairManager {
     public void sitInChair(Player player, Location location){
         Chair ch = getChairAt(location);
         if(isChair(location) && ch != null){
-            playersInChairs.put(player.getUniqueId(), ch);
             ch.sit(player);
+            playersInChairs.put(player.getUniqueId(), ch);
         }
     }
 
@@ -91,5 +106,9 @@ public class ChairManager {
 
     public int getTaskInt() {
         return taskInt;
+    }
+
+    public HashMap<UUID, String> getCreatingChair() {
+        return creatingChair;
     }
 }

@@ -11,9 +11,9 @@ reward-table: "default rewards table"
 #defaults to default rewards table if there is an error.
 
 hologram-lines:
-  - ""
-  - ""
-  - ""
+  - "Fishing Chair"
+  - "%display%"
+  - "%user%"
 #Lines that will display on the hologram above the chair.
 #Placeholders:
 #   %display% - The value indicated in "display" above.

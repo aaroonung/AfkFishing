@@ -1,3 +1,7 @@
-title: "&7[&l&aAfk&bFishing&7]"
-admin-title: "&7[&l&aAfk&bFishing&7 &cAdmin]"
+menu-title: "&7[&l&aAfk&bFishing&7]"
+admin-menu-title: "&7[&l&aAfk&bFishing&7 &cAdmin]"
+
+border-item-material: "BLACK_STAINED_GLASS_PANE"
+border-item-title: "&e"
+
 

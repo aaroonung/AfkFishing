@@ -4,9 +4,8 @@ api-version: 1.17
 version: 1.0
 softdepend:
     - HolographicDisplays
-    - GSit
 commands:
     fish:
-        description: "Test"
+        description: "Commands for AfkFishing"
         usage: "/fish"
-        permission: "joe"
+        permission: "afkfishing.command"

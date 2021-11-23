@@ -13,3 +13,15 @@ reset-time-on-dismount: true
 enable-shift-right-click-menu: true
 #true: enables the shift right click menu
 #false: disables it
+
+require-fishing-rod: true
+#true: Requires a fishing rod in hand to get rewards
+#false: Does not require a rod
+
+damage-rod: true
+#true: damages rods on reward
+#false: no rod damage
+#Accounts for unbreaking enchant
+
+rod-broken-sound: ""
+

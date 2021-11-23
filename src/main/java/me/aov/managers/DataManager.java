@@ -1,8 +1,12 @@
 package me.aov.managers;
 
 import me.aov.AfkFishing;
+import me.aov.objects.Chair;
 import me.aov.objects.ChairDescription;
+import me.aov.objects.ChairSerialization;
 import me.aov.objects.RewardTable;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -15,12 +19,14 @@ import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.logging.Level;
 
 public class DataManager {
 
-    public HashMap<String, RewardTable> rewardTableSet;
-    public HashMap<String, ChairDescription> chairDescriptions;
+    private HashMap<String, RewardTable> rewardTableSet;
+    private HashMap<String, ChairDescription> chairDescriptions;
 
     private AfkFishing main;
 
@@ -43,8 +49,71 @@ public class DataManager {
         chairDescriptions = new HashMap<>();
         generateFolder();
         generateConfigs();
-        loadRewardTables();
-        loadDescriptions();
+        Bukkit.getScheduler().scheduleSyncDelayedTask(main, new Runnable() {
+            @Override
+            public void run() {
+                loadRewardTables();
+                loadDescriptions();
+                loadChairsFromFile();
+            }
+        },60L);
+
+    }
+
+    public void loadChairsFromFile(){
+        File f = new File(dataFolderPath.toFile(), "chairs.yml");
+        if(!f.exists()){
+            try {
+                f.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return;
+        }
+        FileConfiguration chairData = (FileConfiguration) new YamlConfiguration();
+        try {
+            chairData.load(f);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+        List<ChairSerialization> list = (List<ChairSerialization>) chairData.get("chairs");
+        for(ChairSerialization serialization : list ){
+            main.getChairManager().getChairsList().add(new Chair(main, serialization.getChairLocation(), chairDescriptions.get(serialization.getChairDescription())));
+            main.getChairManager().getChairLocations().add(serialization.getChairLocation());
+        }
+        f.delete();
+        try {
+            f.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void saveChairsToFile(){
+        File f = new File(dataFolderPath.toFile(), "chairs.yml");
+        if(!f.exists()){
+            try {
+                f.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        List<ChairSerialization> list = new ArrayList<>();
+        for(Chair ch : main.getChairManager().getChairsList()){
+            list.add(ch.getChairSerialization());
+        }
+        FileConfiguration chairData = (FileConfiguration) new YamlConfiguration();
+        try {
+            chairData.load(f);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+        chairData.set("chairs", list);
+        try {
+            chairData.save(f);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public ArrayList<ItemStack> getItemStacksFromFiles(String name) {
@@ -59,6 +128,11 @@ public class DataManager {
             }
         } else {
             FileConfiguration itemStacksConfig = (FileConfiguration) new YamlConfiguration();
+            try {
+                itemStacksConfig.load(f);
+            } catch (IOException | InvalidConfigurationException e) {
+                e.printStackTrace();
+            }
             if (itemStacksConfig.getList("items") != null) {
                 itemStacks = (ArrayList<ItemStack>) itemStacksConfig.getList("items");
             }
@@ -77,6 +151,12 @@ public class DataManager {
         }
         FileConfiguration itemStacksConfig = (FileConfiguration) new YamlConfiguration();
         itemStacksConfig.set("items", arrayList);
+        try {
+            itemStacksConfig.save(f);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        chairDescriptions.get(name).setItemStacks(getItemStacksFromFiles(name));
     }
 
 
@@ -161,7 +241,7 @@ public class DataManager {
         }
         this.menuLangConfiguration = (FileConfiguration) new YamlConfiguration();
         try {
-            menuLangConfiguration.load(langFile);
+            menuLangConfiguration.load(menuLangFile);
         } catch (Exception e) {
             main.getServer().getLogger().log(Level.SEVERE, "Failed to load menu lang.yml");
         }
@@ -171,6 +251,14 @@ public class DataManager {
         if (!defaultRewardsFile.exists()) {
             try {
                 copyInputStreamToFile(main.getResource("default rewards table.yml"), defaultRewardsFile);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        File defaultDescriptionFile = new File(descriptionsPath.toFile(), "default description.yml");
+        if (!defaultDescriptionFile.exists()) {
+            try {
+                copyInputStreamToFile(main.getResource("default description.yml"), defaultDescriptionFile);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -191,6 +279,10 @@ public class DataManager {
 
     }
 
+    public Path getDescriptionsPath() {
+        return descriptionsPath;
+    }
+
     public String getLang(String s) {
         return langConfiguration.getString(s);
     }
@@ -201,5 +293,13 @@ public class DataManager {
 
     public FileConfiguration getMenuLangConfiguration() {
         return menuLangConfiguration;
+    }
+
+    public HashMap<String, RewardTable> getRewardTableSet() {
+        return rewardTableSet;
+    }
+
+    public HashMap<String, ChairDescription> getChairDescriptions() {
+        return chairDescriptions;
     }
 }

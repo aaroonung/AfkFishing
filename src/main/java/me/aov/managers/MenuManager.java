@@ -28,7 +28,7 @@ public class MenuManager {
         }
     }
 
-    public Inventory getAdminMenu(Chair chair) {
+    private Inventory getAdminMenu(Chair chair) {
         Inventory inventory = Bukkit.createInventory(null, 54, Color.color(main.getDataManager().getMenuLangConfiguration().getString("admin-menu-title")));
         inventory.setContents(getNormalMenu(chair).getContents().clone());
         ItemBuilder itemBuilder = new ItemBuilder(Material.OAK_SIGN);
@@ -36,10 +36,11 @@ public class MenuManager {
         ItemStack nameIndicator = itemBuilder.toItemStack();
         setAfkItem(nameIndicator);
         inventory.setItem(0, nameIndicator);
+        setAdminItems(inventory, chair);
         return inventory;
     }
 
-    public Inventory getNormalMenu(Chair chair) {
+    private Inventory getNormalMenu(Chair chair) {
         Inventory inventory = Bukkit.createInventory(null, 54, Color.color(main.getDataManager().getMenuLangConfiguration().getString("menu-title")));
         setBorderItem(inventory);
         if (chair.getChairDescription().getItemStacks() != null) {
@@ -50,7 +51,7 @@ public class MenuManager {
         return inventory;
     }
 
-    public void setBorderItem(Inventory menu) {
+    private void setBorderItem(Inventory menu) {
         ItemBuilder border = new ItemBuilder(Material.valueOf(main.getDataManager().getMenuLangConfiguration().getString("border-item-material")));
         ItemStack itemStack = border.setName(Color.color(main.getDataManager().getMenuLangConfiguration().getString("border-item-title"))).toItemStack();
         setAfkItem(itemStack);
@@ -69,9 +70,45 @@ public class MenuManager {
         }
     }
 
+    private void setAdminItems(Inventory inventory, Chair chair){
+        ItemBuilder itemBuilder = new ItemBuilder(Material.EMERALD_BLOCK);
+        itemBuilder.setName(Color.color("&aRaise Hologram"));
+        itemBuilder.setLore("Click to raise the hologram by .25 blocks");
+        markAfkItem(itemBuilder.toItemStack(), "2");
+        inventory.setItem(26, itemBuilder.toItemStack());
+
+        itemBuilder = new ItemBuilder(Material.REDSTONE_BLOCK);
+        itemBuilder.setName(Color.color("&cLower Hologram"));
+        itemBuilder.setLore("Click to lower the hologram by .25 blocks");
+        markAfkItem(itemBuilder.toItemStack(), "3");
+        inventory.setItem(35, itemBuilder.toItemStack());
+
+        itemBuilder = new ItemBuilder(Material.BARRIER);
+        itemBuilder.setName(Color.color("&4&lDelete chair"));
+        itemBuilder.setLore("Click to delete the chair");
+        markAfkItem(itemBuilder.toItemStack(), "4");
+        inventory.setItem(53, itemBuilder.toItemStack());
+
+        itemBuilder = new ItemBuilder(Material.OAK_SIGN);
+        itemBuilder.setName(Color.color("&7Chair Location"));
+        itemBuilder.setLore(chair.getChairLocation().getBlockX()+"",
+                chair.getChairLocation().getBlockY()+"",
+                chair.getChairLocation().getBlockZ()+"",
+                chair.getChairLocation().getWorld().getName());
+        setAfkItem(itemBuilder.toItemStack());
+        inventory.setItem(1,itemBuilder.toItemStack());
+    }
+
     public void setAfkItem(ItemStack itemStack){
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.getPersistentDataContainer().set(new NamespacedKey(main, "afkfishing"), PersistentDataType.BYTE, Byte.valueOf("1"));
         itemStack.setItemMeta(itemMeta);
     }
+
+    public void markAfkItem(ItemStack itemStack, String s){
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        itemMeta.getPersistentDataContainer().set(new NamespacedKey(main, "afkfishing"), PersistentDataType.BYTE, Byte.valueOf(s));
+        itemStack.setItemMeta(itemMeta);
+    }
+
 }

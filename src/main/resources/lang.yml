@@ -17,5 +17,19 @@ full-inventory-stay: 70
 full-inventory-fade-out: 20
 #Length in ticks of fade out.
 
+empty-user: "Vacant Chair"
+
+desc-not-found: "&7Inputted chair description was not found"
+
+chair-deleted-message: "&7Chair Deleted."
+
+chair-create-message: "&7Chair created"
+
+no-permission-message: "&7You don't have permission for this action!"
+
+no-rod-message: "&7You must have a fishing rod in hand to receive rewards!"
+
+rod-broken: "&7Your fishing rod has broken!"
+
 
 
