@@ -11,7 +11,6 @@ import me.aov.managers.DataManager;
 import me.aov.managers.MenuManager;
 import me.aov.objects.ChairSerialization;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -44,6 +43,7 @@ public class AfkFishing extends JavaPlugin {
     @Override
     public void onDisable() {
         dataManager.saveChairsToFile();
+        chairManager.removeAllChairs();
         super.onDisable();
     }
 
@@ -77,5 +77,3 @@ public class AfkFishing extends JavaPlugin {
 //TODO ActionBar
 //TODO Particles, Sounds
 //TODO Global Boosts
-//TODO Add reload
-//TODO Add permissions, commands

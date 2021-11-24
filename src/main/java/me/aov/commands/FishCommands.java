@@ -39,6 +39,11 @@ public class FishCommands implements CommandExecutor {
                     get(player, args);
                     return true;
                 }
+            }else if(args.length == 1){
+                if(args[0].equalsIgnoreCase("reload")){
+                    main.getDataManager().reloadConfigs();
+                    main.getDataManager().reloadDescriptionsAndChairsAndRewards();
+                }
             }
             help(player);
         }

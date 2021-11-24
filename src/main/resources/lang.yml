@@ -2,10 +2,9 @@ prefix: "&7[&l&aAfk&bFishing&7] "
 #Prefix for every plugin message
 #Can be empty
 
-reward-message: "You've gained a fishing reward!"
-#Message upon receiving reward
-#Can be empty
+empty-user: "Vacant Chair"
 
+#######################################################
 full-inventory-title: "&cInventory Full !!"
 #Displayed Title
 full-inventory-subtitle: "Items will be dropped on the floor"
@@ -16,8 +15,7 @@ full-inventory-stay: 70
 #Length in ticks to stay, default:70
 full-inventory-fade-out: 20
 #Length in ticks of fade out.
-
-empty-user: "Vacant Chair"
+#######################################################
 
 desc-not-found: "&7Inputted chair description was not found"
 
@@ -27,9 +25,17 @@ chair-create-message: "&7Chair created"
 
 no-permission-message: "&7You don't have permission for this action!"
 
+reward-message: "You've gained a fishing reward!"
+#Message upon receiving reward
+#Can be empty
+
+#######################################################
+
 no-rod-message: "&7You must have a fishing rod in hand to receive rewards!"
 
 rod-broken: "&7Your fishing rod has broken!"
 
+#######################################################
 
+boss-bar-title: ""
 

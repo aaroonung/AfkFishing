@@ -23,5 +23,11 @@ damage-rod: true
 #false: no rod damage
 #Accounts for unbreaking enchant
 
-rod-broken-sound: ""
+use-boss-bar: true
+#true: uses bossbar to track how much time is left
+#false: does not use bossbar
+
+boss-bar-type: "SOLID"
+
+boss-bar-color: "PINK"
 

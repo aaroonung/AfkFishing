@@ -36,9 +36,6 @@ public class DataManager {
     private File menuLangFile;
     private FileConfiguration menuLangConfiguration;
 
-    private File menuConfigFile;
-    private FileConfiguration menuConfiguration;
-
     private Path dataFolderPath;
     private Path rewardsFolderPath;
     private Path descriptionsPath;
@@ -57,8 +54,28 @@ public class DataManager {
                 loadChairsFromFile();
             }
         },60L);
-
     }
+
+    public void reloadConfigs(){
+        main.reloadConfig();
+        generateConfigs();
+    }
+
+    public void reloadDescriptionsAndChairsAndRewards(){
+        saveChairsToFile();
+        main.getChairManager().removeAllChairs();
+
+        main.getChairManager().setChairsList(null);
+        main.getChairManager().setChairLocations(null);
+
+        chairDescriptions = null;
+        rewardTableSet = null;
+
+        loadRewardTables();
+        loadDescriptions();
+        loadChairsFromFile();
+    }
+
 
     public void loadChairsFromFile(){
         File f = new File(dataFolderPath.toFile(), "chairs.yml");
@@ -216,7 +233,6 @@ public class DataManager {
         descriptionsPath = descriptions.toPath();
     }
 
-    @SuppressWarnings("ResultOfMethodCallIgnored")
     private void generateConfigs() {
         main.getConfig().options().copyDefaults(true);
         main.saveDefaultConfig();

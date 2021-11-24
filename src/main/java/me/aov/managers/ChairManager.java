@@ -39,8 +39,15 @@ public class ChairManager {
         chair.getChairHologram().delete();
         if(chair.getSittingPlayer() != null){
             playersInChairs.remove(chair.getSittingPlayer().getUniqueId());
-            chair.getArmorStand().getPassengers().clear();
+            chair.getArmorStand().eject();
+            chair.getArmorStand().remove();
             chair.removePlayer();
+        }
+    }
+
+    public void removeAllChairs(){
+        for(Chair ch : chairsList){
+            removeChair(ch);
         }
     }
     public boolean isChair(Location location){
